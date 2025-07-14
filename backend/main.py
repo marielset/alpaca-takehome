@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Form
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -15,3 +15,8 @@ app.add_middleware(
 @app.get("/")
 async def health_check():
     return {"status": "healthy"}
+
+@app.post("/generate-note")
+async def generate_note(text: str = Form(...)):
+    print(f"generating notes for {text}")
+    return {"note": "These are the ai placeholder notes. Replace with ai call response."}

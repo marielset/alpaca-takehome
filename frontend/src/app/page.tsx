@@ -1,28 +1,71 @@
+"use client";
+import React, { useState } from "react";
+
 export default function Home() {
+  const [sessionNotes, setSessionNotes] = useState("");
+  const [hasGeneratedResponse, setHasGeneratedResponse] =
+    useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const form = e.currentTarget as HTMLFormElement;
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch("http://localhost:8000/generate-note", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      setHasGeneratedResponse(true);
+      setSessionNotes(data.note);
+    } catch (err) {
+      console.error("Error generating note:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-8 p-8 text-center">
-      <h1 className="text-3xl font-bold">
-        Welcome to the Alpaca Health Platform Take-Home Project
-      </h1>
-
-      <p className="max-w-lg text-lg">
-        This is your starting point. Please replace this page with your own
-        implementation following the project requirements.
-      </p>
-
-      <div className="rounded-md bg-yellow-50 p-4 text-yellow-800">
-        <p className="text-sm">
-          Tip: Edit{" "}
-          <code className="rounded bg-yellow-100 px-1 py-0.5 font-mono">
-            src/app/page.tsx
-          </code>{" "}
-          to get started
-        </p>
-      </div>
-
-      <footer className="fixed bottom-4 text-sm text-gray-500">
-        <p>Good luck with your implementation!</p>
-      </footer>
+    <div className="max-w-2xl mx-auto p-6">
+      <h1 className="text-2xl font-semibold mb-4">Therapy Note Generator</h1>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <label className="block font-medium">Session Notes:</label>
+        <textarea
+          rows={10}
+          name="text"
+          className="w-full text-black border border-gray-300 p-3 rounded resize-y"
+          placeholder={"Please write your notes here."}
+          value={sessionNotes}
+          onChange={(e) => setSessionNotes(e.target.value)}
+        />
+        <div className="flex justify-between">
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            {loading
+              ? "Generating..."
+              : hasGeneratedResponse
+              ? "Regenerate Note"
+              : "Generate Note"}
+          </button>
+          {hasGeneratedResponse && (
+            <button
+              type="button"
+              onClick={() => {}}
+              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+            >
+              Save
+            </button>
+          )}
+        </div>
+      </form>
     </div>
   );
 }
