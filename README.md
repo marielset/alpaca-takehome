@@ -1,79 +1,24 @@
-# Alpaca Health Software Engineering Take-Home Project
+# Mariel Setton's Alpaca Health Software Engineering Take-Home Project
 
-### Project Description
+### - Approach and challenge
 
-Visit this link for details:
-[https://harviio.notion.site/Alpaca-Health-Eng-Take-home-Project-1411bfc50b90803382d4cae01f9bcf18?pvs=4](https://www.notion.so/harviio/ABA-Session-Note-Generator-Take-Home-Project-1411bfc50b90803382d4cae01f9bcf18?pvs=4)
+I thought about this from a user perspective first- what does the user want and need to see, what would complicate the application. Time was the biggest challenge, so I had to make sure I had enough time to get through the important features.
 
-## Setup Instructions
+### - Design decisions
 
-### Backend Setup (Python 3.11+ required)
+My first step was to consider what the core functionality was and get started on that. The therapist wants to write notes in a text window and see the formatted output from AI. Should we want therapists to be able to see their original notes, we can return those in the response as well and display them in a separate window.
 
-```bash
-# Create and activate virtual environment
-python -m venv alpaca_venv
-source alpaca_venv/bin/activate  # or `venv\Scripts\activate` on Windows
+I wanted to allow for regeneration of AI notes based on edits, and then once the user is satisfied, they are able to save notes to their database.
 
-# Install dependencies
-pip install -r requirements.txt
+I deprioritized allowing different users, as that would only make sense with login functionality.
 
-# Start the server
-fastapi dev main.py
-```
+With more time, I would have added the ability to save details about the session in their own distinct variables such as session length, session type, and other fields. Those would go in the form I created as separate fields. I would also consider allowing the therapist to edit the prompt to AI. That might end up being distracting though since without proper knowledge, they might end up misusing the prompt section and conflate it with the notes section.
 
-### Frontend Setup (Node.js 18+ required)
+### - Assumptions
 
-```bash
-# Navigate to frontend directory
-cd frontend
+Therapists do not need to see their original notes once they are submitted.
 
-# Install dependencies
-npm install
+### - Sources
 
-# Start the development server
-npm run dev
-```
-
-The application will be available at:
-
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:8000
-- API Documentation: http://localhost:8000/docs
-
-## Default Project Structure
-
-- `frontend/`: Next.js application
-  - `src/components/`: Reusable React components
-  - `src/app/`: Next.js app router pages
-- `backend/`: FastAPI application
-  - `app/main.py`: API endpoints
-
-## Development
-
-- Frontend runs on port 3000 with hot reload enabled
-- Backend runs on port 8000 with auto-reload enabled
-- API documentation available at http://localhost:8000/docs
-
-## Submission
-
-1. Create a private GitHub repository
-2. Implement your solution
-3. Document any assumptions or trade-offs
-4. Include instructions for running your solution
-5. Send us the repository link
-
-## Time Expectation
-
-- Expected time: 3-4 hours
-- Please don't spend more than 6 hours
-
-## Evaluation Criteria
-
-| Category | Details | Weight |
-|----------|---------|--------|
-| Product sense and scoping | - Final product decisions alignment with requirements<br>- Appropriate deprioritization of non-crucial parts | 10% |
-| Technology selection | - Right tools chosen for the job | 10% |
-| Technical Level | - Well-organized and intuitive code structure<br>- Modular code (e.g., React components used)<br>- Proper use of React hooks<br>- Good state management<br>- Correct use of useEffect hooks | 40% |
-| Craft and Quality | - Usable and intuitive UI/UX<br>- Presence and severity of bugs | 20% |
-| Documentation | - Clear communication of logic and technical decisions in README | 10% |
-| Testing | - Presence of tests<br>- Quality and robustness of tests | 10% |
+I used AI to generate code snippets and help me think through pros and cons of database decisions since I'm most comfortable with a typescript backend.
+AI wrote the schemas module- whereas I would usually add a types module in node.js

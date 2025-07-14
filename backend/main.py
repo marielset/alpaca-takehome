@@ -1,7 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from db import Base, engine
+from routers import session_note, ai_generator
 
 app = FastAPI()
+Base.metadata.create_all(bind=engine)
+app.include_router(session_note.router)
+app.include_router(ai_generator.router)
 
 # Configure CORS
 app.add_middleware(
@@ -15,3 +20,4 @@ app.add_middleware(
 @app.get("/")
 async def health_check():
     return {"status": "healthy"}
+
