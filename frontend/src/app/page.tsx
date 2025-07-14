@@ -15,10 +15,13 @@ export default function Home() {
     const formData = new FormData(form);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/generate-note`, {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/generate-note`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const data = await response.json();
       setHasGeneratedResponse(true);
@@ -27,6 +30,27 @@ export default function Home() {
       console.error("Error generating note:", err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSave = async () => {
+    const formData = new FormData();
+    formData.append("note", sessionNotes);
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/save-note`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await response.json();
+      console.log(data);
+      console.log("Saved note with ID:", data.id);
+    } catch (error) {
+      console.error("Error saving note:", error);
     }
   };
 
@@ -58,7 +82,7 @@ export default function Home() {
           {hasGeneratedResponse && (
             <button
               type="button"
-              onClick={() => {}}
+              onClick={handleSave}
               className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
             >
               Save
